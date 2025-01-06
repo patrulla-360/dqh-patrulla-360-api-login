@@ -1,15 +1,12 @@
-from sqlalchemy import Column, Integer, String, DateTime
-from sqlalchemy.ext.declarative import declarative_base
-from datetime import datetime
+from pydantic import BaseModel, ConfigDict
+from typing import Optional
 
-Base = declarative_base()
+class User(BaseModel):
+    id: int
+    username: str
+    password: Optional[str]  # Generalmente no querrás devolver la contraseña en respuestas
+    email: Optional[str]
+    created_at: Optional[datetime]
 
-class User(Base):
-    __tablename__ = "usuarios"
-    __table_args__ = {"schema": "usr_p360"}  # Especificar el esquema de la tabla
-
-    id = Column("identificacion", Integer, primary_key=True, index=True)
-    username = Column("nombre_usuario", String(50), unique=True, nullable=False)
-    password = Column("contraseña", String(255), nullable=False)  # Contraseña hasheada
-    email = Column("correo_electronico", String(100), nullable=True)
-    created_at = Column("created_at", DateTime, default=datetime.utcnow)
+    # Configuración para que Pydantic permita mapear directamente desde un ORM (como SQLAlchemy)
+    model_config = ConfigDict(from_attributes=True)

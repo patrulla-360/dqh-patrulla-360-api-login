@@ -1,6 +1,0 @@
-fastapi
-sqlalchemy
-asyncpg
-werkzeug
-pyjwt
-uvicorn

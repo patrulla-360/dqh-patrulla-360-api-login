@@ -1,17 +1,20 @@
 from fastapi import FastAPI
-from routers import auth
-from models.user_model import Base
-from database import engine
+from routers.auth import router as auth_router  # Importar las rutas de autenticación
 
-app = FastAPI()
+app = FastAPI(
+    title="API Login",
+    description="API para autenticación y generación de tokens JWT",
+    version="1.0.0"
+)
 
-# Crear tablas si no existen al iniciar la aplicación
-@app.on_event("startup")
-async def create_tables():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+# Registrar rutas
+app.include_router(auth_router, prefix="/api/v1", tags=["Auth"])
 
-# Registrar las rutas
-app.include_router(auth.router, prefix="/api", tags=["Auth"])
+@app.get("/")
+def root():
+    return {"message": "Bienvenido a la API de login"}
 
 
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)

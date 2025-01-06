@@ -3,10 +3,9 @@ from sqlalchemy.orm import sessionmaker
 import os
 
 # URL de conexión a PostgreSQL
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "postgresql+asyncpg://postgres:jcklqo2134@/postgres?host=/cloudsql/dqh-patrulla-360:southamerica-east1:dqh-patrulla-postgres"
-)
+DATABASE_URL = "postgresql+asyncpg://postgres:jcklqo2134@/postgres?host=/cloudsql/dqh-patrulla-360:southamerica-east1:dqh-patrulla-postgres"
+
+
 
 # Crear el motor de la base de datos
 engine = create_async_engine(DATABASE_URL, echo=True)
